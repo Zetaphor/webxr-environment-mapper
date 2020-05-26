@@ -53,7 +53,11 @@ function requestSession() {
   statusEl.innerHTML = 'Requesting WebXR session';
   navigator.xr.isSessionSupported('immersive-vr').then(function (supported) {
     let options = { optionalFeatures: ['local-floor', 'bounded-floor'] };
-    navigator.xr.requestSession('immersive-vr', options).then(onSessionStarted);
+    navigator.xr.requestSession('immersive-vr', options).then(onSessionStarted).catch(function (err) {
+      totalPointsEl.parentElement.style.display = 'none';
+      statusEl.parentElement.style.display = 'block';
+      statusEl.innerHTML = err;
+    });
   });
 }
 
