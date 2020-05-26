@@ -10,19 +10,10 @@
   <script src="script.js" defer type="module"></script>
   <style>
     button {
-      margin-left: 25px;
-      color: black;
-      display: inline-block;
+      margin: 5px;
       text-align: center;
-      background-color: rgb(239, 239, 239);
-      box-sizing: border-box;
-      font: 400 13.3333px Arial;
       padding: 5px 5px;
       border-width: 2px;
-      border-style: outset;
-      border-color: rgb(118, 118, 118);
-      border-image: initial;
-
     }
 
     textarea {
@@ -32,7 +23,8 @@
       height: 400px;
     }
 
-    h1, h2 {
+    h1,
+    h2 {
       text-align: center;
     }
 
@@ -40,6 +32,10 @@
       display: block;
       font-size: 2em;
       margin-top: 10px;
+    }
+
+    #buttonContainer {
+      text-align: center;
     }
   </style>
 </head>
@@ -49,7 +45,7 @@
     <h1>WebXR Environment Mapper</h1>
     <h2>Status: <span id="status">Waiting for WebXR session</span></h2>
     <h2>Total Points: <span id="totalPoints">0</span></h2>
-    <div>
+    <div id="buttonContainer">
       <button id="downloadScene">Download Scene</button>
       <button id="outputPoints">Output Points</button>
       <button id="downloadPoints">Download Points</button>
