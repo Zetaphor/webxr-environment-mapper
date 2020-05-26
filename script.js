@@ -4,6 +4,7 @@ let camera, scene, renderer, container;
 let conLeft, conRight, xrConLeft, xrConRight;
 let light, cubeInterval, cubeColor;
 let markers = new THREE.Group();
+let outputEl;
 
 init();
 requestSession();
@@ -11,6 +12,7 @@ requestSession();
 window.addEventListener("unload", closeSession);
 
 function init() {
+  outputEl = document.getElementById('output');
   container = document.createElement('div');
   document.body.appendChild(container);
 
@@ -35,9 +37,10 @@ function init() {
   renderer.xr.enabled = true;
 
   document.addEventListener('click', function(e) {
-    if (e.target.id === 'exportPoints') exportPoints();
+    if (e.target.id === 'outputPoints') outputPoints();
+    if (e.target.id === 'downloadPoints') downloadPoints();
     else if (e.target.id === 'importPoints') importPoints();
-    else if (e.target.id === 'exportScene') exportScene();
+    else if (e.target.id === 'downloadScene') downloadScene();
   }, false);
 }
 
@@ -65,6 +68,7 @@ async function closeSession(session) {
 
 function onSelectStart() {
   cubeColor = Math.random() * 0xffffff;
+  addMarker();
   cubeInterval = setInterval(addMarker, 250)
 }
 
@@ -74,50 +78,6 @@ function onSelectEnd() {
 
 function onSelect() {
   clearInterval(cubeInterval);
-}
-
-function addMarker() {
-  let marker = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshLambertMaterial({ color: cubeColor }));
-  marker.position.x = xrConRight.position.x;
-  marker.position.y = xrConRight.position.y;
-  marker.position.z = xrConRight.position.z;
-  markers.add(marker);
-}
-
-function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function exportPoints() {
-  let points = [];
-  for (let i = 0; i < markers.children.length; i++) {
-    points.push({
-      x: markers.children[i].position.x,
-      y: markers.children[i].position.y,
-      z: markers.children[i].position.z,
-    });
-  }
-  document.getElementById('output').value = JSON.stringify(points);
-}
-
-function exportScene() {
-  var exporter = new GLTFExporter();
-  exporter.parse(scene, function (gltf) {
-    download('drawing.gltf', JSON.stringify(gltf));
-  }, { truncateDrawRange: false });
-}
-
-function importPoints() {
-  let points = JSON.parse(document.getElementById('output').value);
-  cubeColor = Math.random() * 0xffffff;
-  for (let i = 0; i < points.length; i++) {
-    let marker = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshLambertMaterial({ color: cubeColor }));
-    marker.position.x = points[i].x;
-    marker.position.y = points[i].y;
-    marker.position.z = points[i].z;
-    markers.add(marker);
-  }
-  document.getElementById('output').value = '';
 }
 
 function render() {
@@ -138,12 +98,69 @@ function render() {
   renderer.render(scene, camera);
 }
 
-function download(filename, text) {
-  var element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-  element.setAttribute('download', filename);
-  element.style.display = 'none';
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
+function addMarker() {
+  let marker = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshLambertMaterial({ color: cubeColor }));
+  marker.position.x = xrConRight.position.x;
+  marker.position.y = xrConRight.position.y;
+  marker.position.z = xrConRight.position.z;
+  markers.add(marker);
+}
+
+function animate() {
+  renderer.setAnimationLoop(render);
+}
+
+function outputPoints() {
+  let points = [];
+  for (let i = 0; i < markers.children.length; i++) {
+    points.push({
+      x: markers.children[i].position.x,
+      y: markers.children[i].position.y,
+      z: markers.children[i].position.z,
+    });
+  }
+  outputEl.value = JSON.stringify(points);
+}
+
+function importPoints() {
+  let points = JSON.parse(outputEl.value);
+  cubeColor = Math.random() * 0xffffff;
+  for (let i = 0; i < points.length; i++) {
+    let marker = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshLambertMaterial({ color: cubeColor }));
+    marker.position.x = points[i].x;
+    marker.position.y = points[i].y;
+    marker.position.z = points[i].z;
+    markers.add(marker);
+  }
+  outputEl.value = '';
+}
+
+function downloadScene() {
+  var exporter = new GLTFExporter();
+  exporter.parse(scene, function (gltf) {
+    download('gltf', JSON.stringify(gltf));
+  }, { truncateDrawRange: false });
+}
+
+function downloadPoints() {
+  outputPoints();
+  download('txt', JSON.stringify(outputEl.value));
+}
+
+function download(extension, data) {
+  var downloadLink = document.createElement('a');
+  downloadLink.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(data)}`);
+  downloadLink.setAttribute('download', `environment_${dateTimeString()}.${extension}`);
+  downloadLink.style.display = 'none';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
+
+function dateTimeString() {
+  let today = new Date();
+  let ampm = (today.getHours() >= 12) ? "PM" : "AM";
+  let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  let time = today.getHours() + "." + today.getMinutes() + "." + today.getSeconds();
+  return `${date}_${time}${ampm}`;
 }
