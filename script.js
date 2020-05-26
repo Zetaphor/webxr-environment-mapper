@@ -4,7 +4,7 @@ let camera, scene, renderer, container;
 let conLeft, conRight, xrConLeft, xrConRight;
 let light, cubeInterval, cubeColor;
 let markers = new THREE.Group();
-let outputEl;
+let outputEl, totalPointsEl, statusEl;
 
 init();
 requestSession();
@@ -13,6 +13,9 @@ window.addEventListener("unload", closeSession);
 
 function init() {
   outputEl = document.getElementById('output');
+  totalPointsEl = document.getElementById('totalPoints');
+  statusEl = document.getElementById('status');
+
   container = document.createElement('div');
   document.body.appendChild(container);
 
@@ -45,6 +48,9 @@ function init() {
 }
 
 function requestSession() {
+  totalPointsEl.parentElement.style.display = 'none';
+  statusEl.parentElement.style.display = 'block';
+  statusEl.innerHTML = 'Requesting WebXR session';
   navigator.xr.isSessionSupported('immersive-vr').then(function (supported) {
     let options = { optionalFeatures: ['local-floor', 'bounded-floor'] };
     navigator.xr.requestSession('immersive-vr', options).then(onSessionStarted);
@@ -60,16 +66,21 @@ function onSessionStarted(session) {
   renderer.xr.getSession().addEventListener('selectend', onSelectEnd);
   renderer.xr.getSession().addEventListener('select', onSelect);
   animate();
+  totalPointsEl.parentElement.style.display = 'block';
+  statusEl.parentElement.style.display = 'none';
 }
 
-async function closeSession(session) {
+async function closeSession() {
+  totalPointsEl.parentElement.style.display = 'none';
+  statusEl.parentElement.style.display = 'block';
+  statusEl.innerHTML = 'WebXR session ended';
   await renderer.xr.getSession().end();
 }
 
 function onSelectStart() {
   cubeColor = Math.random() * 0xffffff;
-  addMarker();
-  cubeInterval = setInterval(addMarker, 250)
+  addMarker(xrConRight.position);
+  cubeInterval = setInterval(addMarker(xrConRight.position), 250)
 }
 
 function onSelectEnd() {
@@ -78,6 +89,10 @@ function onSelectEnd() {
 
 function onSelect() {
   clearInterval(cubeInterval);
+}
+
+function animate() {
+  renderer.setAnimationLoop(render);
 }
 
 function render() {
@@ -98,16 +113,13 @@ function render() {
   renderer.render(scene, camera);
 }
 
-function addMarker() {
+function addMarker(position) {
   let marker = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshLambertMaterial({ color: cubeColor }));
-  marker.position.x = xrConRight.position.x;
-  marker.position.y = xrConRight.position.y;
-  marker.position.z = xrConRight.position.z;
+  marker.position.x = position.x;
+  marker.position.y = position.y;
+  marker.position.z = position.z;
   markers.add(marker);
-}
-
-function animate() {
-  renderer.setAnimationLoop(render);
+  totalPointsEl.innerHTML = markers.children.length;
 }
 
 function outputPoints() {
@@ -126,11 +138,7 @@ function importPoints() {
   let points = JSON.parse(outputEl.value);
   cubeColor = Math.random() * 0xffffff;
   for (let i = 0; i < points.length; i++) {
-    let marker = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshLambertMaterial({ color: cubeColor }));
-    marker.position.x = points[i].x;
-    marker.position.y = points[i].y;
-    marker.position.z = points[i].z;
-    markers.add(marker);
+    addMarker(points[i]);
   }
   outputEl.value = '';
 }
