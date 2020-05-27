@@ -92,7 +92,9 @@ async function closeSession() {
 function onSelectStart() {
   cubeColor = Math.random() * 0xffffff;
   addMarker(xrConRight.position);
-  cubeInterval = setInterval(addMarker(xrConRight.position), 250)
+  cubeInterval = setInterval(function () {
+    addMarker(xrConRight.position);
+  }, 250)
 }
 
 function onSelectEnd() {
@@ -148,6 +150,7 @@ function outputPoints() {
 
 function importPoints() {
   let points = JSON.parse(outputEl.value);
+  if (typeof points === 'string') points = JSON.parse(points); // Output from text file is wrapped in quotes
   cubeColor = Math.random() * 0xffffff;
   for (let i = 0; i < points.length; i++) {
     addMarker(points[i]);
