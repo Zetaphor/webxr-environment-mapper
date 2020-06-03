@@ -1,11 +1,11 @@
-import * as THREE from './three.module.js';
-import {
-  GLTFLoader
-} from './GLTFLoader.js';
+import * as THREE from '../jsm/three.module.js';
+import { GLTFLoader } from '../jsm/GLTFLoader.js';
 
 let camera, scene, renderer, container;
 let conLeft, conRight, xrConLeft, xrConRight;
 let light;
+
+const modelFile = 'apartment.glb';
 
 init();
 requestSession();
@@ -28,8 +28,7 @@ function init() {
   scene.add(conLeft, conRight);
 
   const gltfLoader = new GLTFLoader();
-  const url = 'localhost-8000-webxr-environment-mapper-personal-aframe-html.glb';
-  gltfLoader.load(url, (gltf) => {
+  gltfLoader.load(modelFile, (gltf) => {
     const root = gltf.scene;
     scene.add(root);
   });

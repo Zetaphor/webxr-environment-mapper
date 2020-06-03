@@ -1,7 +1,5 @@
-import * as THREE from './three.module.js';
-import {
-  GLTFExporter
-} from './GLTFExporter.js';
+import * as THREE from './jsm/three.module.js';
+import { GLTFExporter } from './jsm/GLTFExporter.js';
 let camera, scene, renderer, container;
 let conLeft, conRight, xrConLeft, xrConRight;
 let light, cubeInterval, cubeColor;
