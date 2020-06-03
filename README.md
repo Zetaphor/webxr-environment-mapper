@@ -47,4 +47,4 @@ There is a simple WebXR ready model loader example included in `test/`, simply r
 
 ### Credit
 
-This is a WebXR imeplementation of the technique devised by [Emanuel Tomozei](https://twitter.com/eman_insilico/status/1246428908356079616), as described in [this article](https://emanueltomozei.wordpress.com/2020/04/14/tutorial-how-to-map-a-vr-environment-to-your-home/).
+This is a WebXR implementation of the technique devised by [Emanuel Tomozei](https://twitter.com/eman_insilico/status/1246428908356079616), as described in [this article](https://emanueltomozei.wordpress.com/2020/04/14/tutorial-how-to-map-a-vr-environment-to-your-home/).
