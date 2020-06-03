@@ -10,7 +10,11 @@ If you are using a tethered device your model will be limited to the area within
 
 **Always exercise caution and make sure your floors are clear of any obstacles and hazards before attempting to map an environment!**
 
-Load the page in a [WebXR compatible browser](https://caniuse.com/#feat=webxr). Put on your device and center your playspace at a point and rotation that is easily repeatable. This will become the origin point (0,0,0) for your model. Using the right controller with the trigger held, trace your hand along the corners and edges of any walls and surfaces you want to be visible in the model. When the trigger is held a cube will be created at the controllers position at a rate of 4 cubes per second. This allows you to make slow movements to get solid lines, or fast movements to cover a large area faster. The cubes will change colors in-between each release and press of the trigger.
+Load the page in a [WebXR compatible browser](https://caniuse.com/#feat=webxr).
+
+Put on your device and center your playspace at a point and rotation that is easily repeatable. This will become the origin point (0,0,0) for your model.
+
+Using the right controller with the trigger held, trace your hand along the corners and edges of any walls and surfaces you want to be visible in the model. When the trigger is held a cube will be created at the controllers position at a rate of 4 cubes per second. This allows you to make slow movements to get solid lines, or fast movements to cover a large area faster. The cubes will change colors in-between each release and press of the trigger.
 
 Once you have walked around your environment and mapped all of the points you want in your final model, you can move to the browser interface.
 
