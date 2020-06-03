@@ -37,7 +37,7 @@ Take your GLTF model into your favorite 3D modelling software and use replace th
 
 ![Example Model](Example.jpg)
 
-There is a simple model loader example included in `test/`, simply replace the value of `modelFile` in `test/script.js` with the path to your own model file.
+There is a simple WebXR ready model loader example included in `test/`, simply replace the value of `modelFile` in `test/script.js` with the path to your own model file.
 
 ### TODO
 
