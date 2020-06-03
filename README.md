@@ -33,7 +33,7 @@ The browser interace is comprised of the following elements:
 * Download Points - Exports the collection of cube coordinates to a text file.
 * Import Points - Copy and paste a previously exported set of points into the textarea and click this button to recreate them in the current scene. This allows you to stop and resume mapping later. Note that the playspace center should not change between exporting and importing or the alignments will be off.
 
-Take your GLTF model into your favorite 3D modelling software and use replace the cube outline with walls and furniture.
+Take your GLTF model into your favorite 3D modelling software and replace the cube outline with walls and furniture.
 
 ![Example Model](Example.jpg)
 
