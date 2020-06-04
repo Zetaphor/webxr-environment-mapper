@@ -2,6 +2,8 @@
 
 ## Create a model of your playspace/home using WebXR
 
+[Glitch Demo](https://glitch.com/edit/#!/webxr-environment-mapper)
+
 ### Usage
 
 **Note:** This tool works best with a wireless device like the Oculus Quest using [Virtual Desktop](https://www.vrdesktop.net/) or [ALVR](https://github.com/JackD83/ALVR/) and the guardian walls disabled.
