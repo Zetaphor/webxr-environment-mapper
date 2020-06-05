@@ -2,7 +2,7 @@
 
 ## Create a model of your playspace/home using WebXR
 
-[Glitch Demo](https://glitch.com/edit/#!/webxr-environment-mapper)
+### [Glitch Demo](https://glitch.com/edit/#!/webxr-environment-mapper)
 
 ### Usage
 
